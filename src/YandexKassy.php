@@ -2,8 +2,8 @@
 
 namespace Grechanyuk\YandexKassy;
 
-use YandexCheckout\Client;
-use YandexCheckout\Helpers\UUID;
+use Grechanyuk\YandexKassy\YandexCheckout\Client;
+use Grechanyuk\YandexKassy\YandexCheckout\Helpers\UUID;
 
 class YandexKassy
 {
@@ -23,14 +23,14 @@ class YandexKassy
      * @param array|bool $payment_method_data
      * @param array|bool $confirmation
      * @return YandexKassy $payment
-     * @throws \YandexCheckout\Common\Exceptions\ApiException
-     * @throws \YandexCheckout\Common\Exceptions\BadApiRequestException
-     * @throws \YandexCheckout\Common\Exceptions\ForbiddenException
-     * @throws \YandexCheckout\Common\Exceptions\InternalServerError
-     * @throws \YandexCheckout\Common\Exceptions\NotFoundException
-     * @throws \YandexCheckout\Common\Exceptions\ResponseProcessingException
-     * @throws \YandexCheckout\Common\Exceptions\TooManyRequestsException
-     * @throws \YandexCheckout\Common\Exceptions\UnauthorizedException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ApiException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\BadApiRequestException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ForbiddenException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\InternalServerError
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\NotFoundException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ResponseProcessingException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\TooManyRequestsException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\UnauthorizedException
      */
 
     public function newPayment($order_id, $amount, $description = false, $capture = false, $payment_method_data = false, $confirmation = false)
@@ -88,14 +88,14 @@ class YandexKassy
      * @param array|float $amount
      * @param string $idempotenceKey
      * @return YandexKassy $payment
-     * @throws \YandexCheckout\Common\Exceptions\ApiException
-     * @throws \YandexCheckout\Common\Exceptions\BadApiRequestException
-     * @throws \YandexCheckout\Common\Exceptions\ForbiddenException
-     * @throws \YandexCheckout\Common\Exceptions\InternalServerError
-     * @throws \YandexCheckout\Common\Exceptions\NotFoundException
-     * @throws \YandexCheckout\Common\Exceptions\ResponseProcessingException
-     * @throws \YandexCheckout\Common\Exceptions\TooManyRequestsException
-     * @throws \YandexCheckout\Common\Exceptions\UnauthorizedException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ApiException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\BadApiRequestException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ForbiddenException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\InternalServerError
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\NotFoundException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ResponseProcessingException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\TooManyRequestsException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\UnauthorizedException
      */
     public function confirmPayment($paymentId, $amount, $idempotenceKey) {
         if(!is_array($amount)) {
@@ -119,14 +119,14 @@ class YandexKassy
      * @param string $paymentId
      * @param string $idempotenceKey
      * @return YandexKassy $payment
-     * @throws \YandexCheckout\Common\Exceptions\ApiException
-     * @throws \YandexCheckout\Common\Exceptions\BadApiRequestException
-     * @throws \YandexCheckout\Common\Exceptions\ForbiddenException
-     * @throws \YandexCheckout\Common\Exceptions\InternalServerError
-     * @throws \YandexCheckout\Common\Exceptions\NotFoundException
-     * @throws \YandexCheckout\Common\Exceptions\ResponseProcessingException
-     * @throws \YandexCheckout\Common\Exceptions\TooManyRequestsException
-     * @throws \YandexCheckout\Common\Exceptions\UnauthorizedException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ApiException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\BadApiRequestException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ForbiddenException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\InternalServerError
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\NotFoundException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ResponseProcessingException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\TooManyRequestsException
+     * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\UnauthorizedException
      */
     public function cancelPayment($paymentId, $idempotenceKey) {
         $this->client->cancelPayment($paymentId, $idempotenceKey);
