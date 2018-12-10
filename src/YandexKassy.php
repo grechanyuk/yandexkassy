@@ -4,6 +4,7 @@ namespace Grechanyuk\YandexKassy;
 
 use Grechanyuk\YandexKassy\YandexCheckout\Client;
 use Grechanyuk\YandexKassy\YandexCheckout\Helpers\UUID;
+use Grechanyuk\YandexKassy\Models\YandexKassy as MYandexKassy;
 
 class YandexKassy
 {
@@ -22,7 +23,7 @@ class YandexKassy
      * @param bool $capture
      * @param array|bool $payment_method_data
      * @param array|bool $confirmation
-     * @return YandexKassy $payment
+     * @return YandexKassy|string $payment
      * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ApiException
      * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\BadApiRequestException
      * @throws \Grechanyuk\YandexKassy\YandexCheckout\Common\Exceptions\ForbiddenException
@@ -56,10 +57,16 @@ class YandexKassy
         }
 
         if(!$confirmation) {
-            $confirmation = [
-                'type' => config('yandexkassy.confirmation_type'),
-                'return_url' => config('yandexkassy.return_url')
-            ];
+            if(config('yandexkassy.confirmation_type') == 'redirect') {
+                $confirmation = [
+                    'type' => config('yandexkassy.confirmation_type'),
+                    'return_url' => config('yandexkassy.return_url')
+                ];
+            } else {
+                $confirmation = [
+                    'type' => config('yandexkassy.confirmation_type')
+                ];
+            }
         }
 
         array_add($paymentArray, 'confirmation', $confirmation);
@@ -71,16 +78,16 @@ class YandexKassy
         $idempotenceKey = UUID::v4();
 
         $response = $this->client->createPayment($paymentArray, $idempotenceKey);
+        $response = json_decode($response);
 
-        $payment = YandexKassy::create([
-            'payment_id' => '',
+        $payment = MYandexKassy::create([
+            'payment_id' => $response->id,
             'order_id' => $order_id,
             'amount' => $amount['value'],
-            'status' => '',
             'idempotenceKey' => $idempotenceKey
         ]);
 
-        return $payment;
+        return $response->confirmation->type == 'redirect' ? $response->confirmation->confirmation_url : $payment;
     }
 
     /**
@@ -106,7 +113,7 @@ class YandexKassy
         }
 
         $response = $this->client->capturePayment($amount, $paymentId, $idempotenceKey);
-        $payment = YandexKassy::where('payment_id', $paymentId)->first();
+        $payment = MYandexKassy::where('payment_id', $paymentId)->first();
 
         $payment->update([
             'status' => $response->status
@@ -131,7 +138,7 @@ class YandexKassy
     public function cancelPayment($paymentId, $idempotenceKey) {
         $this->client->cancelPayment($paymentId, $idempotenceKey);
 
-        $payment = YandexKassy::where('payment_id', $paymentId)->first();
+        $payment = MYandexKassy::where('payment_id', $paymentId)->first();
 
         $payment->update([
             'status' => ''

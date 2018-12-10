@@ -1,5 +1,5 @@
 <?php
-namespace Grechanyuk\YandexKassy;
+namespace Grechanyuk\YandexKassy\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -18,7 +18,7 @@ class CreateYandexkassyPaymentsTable extends Migration
             $table->char('payment_id')->index();
             $table->integer('order_id')->index();
             $table->float('amount');
-            $table->char('status');
+            $table->char('status')->default('pending');
             $table->char('idempotenceKey');
             $table->timestamps();
         });
