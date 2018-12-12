@@ -205,7 +205,7 @@ class YandexKassy
             $currency = $order->getCurrency() ? $order->getCurrency() : config('yandexkassy.currency');
         } else {
             $payment = MYandexKassy::whereOrderId($order['id'])->first();
-            $currency = $order['currency'] ? $order['currency'] : config('yandexkassy.currency');
+            $currency = !empty($order['currency']) ? $order['currency'] : config('yandexkassy.currency');
         }
 
         $amount = [
@@ -295,12 +295,15 @@ class YandexKassy
 
     /**
      * Информация о платеже $order - может быть int orderId
-     * @param int|YandexKassyOrder $order
+     * @param int|YandexKassyOrder|bool $order
+     * @param bool|string $payment_id
      * @return string|\YandexCheckout\Model\PaymentInterface
      */
-    public function getPaymentInfo($order)
+    public function getPaymentInfo($order, $payment_id = false)
     {
-        if ($order instanceof YandexKassyOrder) {
+        if(!$order && $payment_id) {
+            $payment = MYandexKassy::wherePaymentId($payment_id)->first();
+        } elseif ($order instanceof YandexKassyOrder) {
             $payment = MYandexKassy::whereOrderId($order->getOrderId())->first();
         } else {
             $payment = MYandexKassy::whereOrderId($order)->first();
